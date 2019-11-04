@@ -1,24 +1,25 @@
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
-SoftwareSerial mySerial(11, 10);
+SoftwareSerial Serial1(11, 10);
 //SoftwareSerial serial_gps(8, 9); 
 TinyGPSPlus gps;
 String latitude, longitude;
 char c = ' ';
 
 void setup() {
-  Serial.begin(9600);
-  //serial_gps.begin(9600);
-  //Serial.println("GPS Mulai");
-  //while(!Serial);
-   Serial.println("Arduino with mySerial is ready");
+    Serial.begin(9600);
+    Serial.begin(9600);
+    //Serial.println("GPS Mulai");
+    //while(!Serial);
+   Serial.println("Arduino with Serial1 is ready");
  
-    // start communication with the mySerial in 9600
-    mySerial.begin(9600);  
-    Serial.println("mySerial started at 9600");
+    // start communication with the Serial1 in 9600
+    Serial1.begin(115200);  
+    Serial.println("Serial1 started at 9600");
+    Serial1.println("AT+CMGF=1");
     delay(2000);
-    Serial.println("Setup Complete! mySerial is Ready!");
-    mySerial.println("AT+CNMI=2,2,0,0,0"); // AT Command to recieve a live SMS
+    Serial.println("Setup Complete! Serial1 is Ready!");
+    Serial1.println("AT+CNMI=1,2,0,0,0"); // AT Command to recieve a live SMS
     delay(3000);
     SendMessagex();
     delay(3000); 
@@ -29,10 +30,11 @@ void setup() {
 }
 
 void loop() {
-  if (mySerial.available())
-    { c = mySerial.read();
-      //Serial.write(c);
-      
+  
+  if (Serial1.available())
+    { c = Serial1.read();
+      Serial.write(c);
+    }
     if (c=='z'){
       Serial.println("KIRIMBOSS");
       delay(1000); 
@@ -50,7 +52,6 @@ void loop() {
     }else if (c=='v'){
       //MATIKAN SYSTEM KEAMANAN
       digitalWrite(13,LOW);
-    }
     }
   int data=analogRead(A0);
   int cekled=digitalRead(13);
@@ -79,17 +80,17 @@ void SendMessage()
     longitude = String(gps.location.lng(),6);
     String link = "www.google.com/maps/place/" + String(latitude) + "," + String(longitude) ;
   
-  mySerial.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
+  Serial1.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
   delay(1000);  // Delay of 1000 milli seconds or 1 second
-  mySerial.println("AT+CMGS=\"+6281299004884\"\r"); // Replace x with mobile number
+  Serial1.println("AT+CMGS=\"+6281299004884\"\r"); // Replace x with mobile number
   delay(1000);
-  mySerial.println("INFORMASI!!!");
-  mySerial.println("-----------");
-  mySerial.println("PERMINTAAN LOKASI MOTOR");// The SMS text you want to send
-  mySerial.println("Ada Pada Koordinat:");
-  mySerial.println(link);
+  Serial1.println("INFORMASI!!!");
+  Serial1.println("-----------");
+  Serial1.println("PERMINTAAN LOKASI MOTOR");// The SMS text you want to send
+  Serial1.println("Ada Pada Koordinat:");
+  Serial1.println(link);
   delay(100);
-   mySerial.println((char)26);// ASCII code of CTRL+Z
+   Serial1.println((char)26);// ASCII code of CTRL+Z
   delay(1000);
 }
 
@@ -101,52 +102,52 @@ void SendMessagekontak()
     longitude = String(gps.location.lng(),6);
     String link = "www.google.com/maps/place/" + String(latitude) + "," + String(longitude) ;
   
-  mySerial.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
+  Serial1.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
   delay(1000);  // Delay of 1000 milli seconds or 1 second
-  mySerial.println("AT+CMGS=\"+6281299004884\"\r"); // Replace x with mobile number
+  Serial1.println("AT+CMGS=\"+6281299004884\"\r"); // Replace x with mobile number
   delay(1000);
-  mySerial.println("PERINGATAN!!!");
-  mySerial.println("-------------");
-  mySerial.println("MOTOR ANDA TELAH DINYALAKAN");// The SMS text you want to send
-  mySerial.println("Pada Koordinat:");
-  mySerial.println(link);
+  Serial1.println("PERINGATAN!!!");
+  Serial1.println("-------------");
+  Serial1.println("MOTOR ANDA TELAH DINYALAKAN");// The SMS text you want to send
+  Serial1.println("Pada Koordinat:");
+  Serial1.println(link);
   delay(100);
-   mySerial.println((char)26);// ASCII code of CTRL+Z
+   Serial1.println((char)26);// ASCII code of CTRL+Z
   delay(1000);
 }
 
 void SendMessagex()
 {
-  mySerial.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
+  Serial1.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
   delay(1000);  // Delay of 1000 milli seconds or 1 second
-  mySerial.println("AT+CMGS=\"+6281299004884\"\r"); // Replace x with mobile number
+  Serial1.println("AT+CMGS=\"+6281299004884\"\r"); // Replace x with mobile number
   delay(1000);
-  mySerial.println("INFORMASI!!!");
-  mySerial.println("-----------");
-  mySerial.println("SYSTEM KEAMANAN KENDARAAN PADA SEPEDA MOTOR");// The SMS text you want to send
-  mySerial.println("TELAH DIAKTIFKAN");
-  mySerial.println("-----------");
-  mySerial.println("Created By:");
-  mySerial.println("NURAENI PUJI ASTUTI");
-  mySerial.println("131105150400");
+  Serial1.println("INFORMASI!!!");
+  Serial1.println("-----------");
+  Serial1.println("SYSTEM KEAMANAN KENDARAAN PADA SEPEDA MOTOR");// The SMS text you want to send
+  Serial1.println("TELAH DIAKTIFKAN");
+  Serial1.println("-----------");
+  Serial1.println("Created By:");
+  Serial1.println("NURAENI PUJI ASTUTI");
+  Serial1.println("131105150400");
   delay(100);
-   mySerial.println((char)26);// ASCII code of CTRL+Z
+   Serial1.println((char)26);// ASCII code of CTRL+Z
   delay(1000);
 }
 
 void SendMessageaktifkan()
 {
-  mySerial.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
+  Serial1.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
   delay(1000);  // Delay of 1000 milli seconds or 1 second
-  mySerial.println("AT+CMGS=\"+6281299004884\"\r"); // Replace x with mobile number
+  Serial1.println("AT+CMGS=\"+6281299004884\"\r"); // Replace x with mobile number
   delay(1000);
-  mySerial.println("INFORMASI!!!");
-  mySerial.println("-----------");
-  mySerial.println("SYSTEM KEAMANAN");// The SMS text you want to send
-  mySerial.println("TELAH DIAKTIFKAN");
-  mySerial.println("-----------");
+  Serial1.println("INFORMASI!!!");
+  Serial1.println("-----------");
+  Serial1.println("SYSTEM KEAMANAN");// The SMS text you want to send
+  Serial1.println("TELAH DIAKTIFKAN");
+  Serial1.println("-----------");
   delay(100);
-   mySerial.println((char)26);// ASCII code of CTRL+Z
+   Serial1.println((char)26);// ASCII code of CTRL+Z
   delay(1000);
   digitalWrite(13,HIGH);
 }
